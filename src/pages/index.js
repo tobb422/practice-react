@@ -12,7 +12,16 @@ export default class Index extends Component {
 
   async componentDidMount() {
     const tmp = await axios.get('https://www.googleapis.com/books/v1/volumes?q=React')
-    this.setState({ books: tmp.data.items })
+    this.setState({
+      books: tmp.data.items.map(item => {
+        return {
+          id:          item.id,
+          title:       item.volumeInfo.title,
+          description: item.volumeInfo.description,
+          image:       item.volumeInfo.imageLinks.thumbnail,
+        }
+      }),
+    })
   }
 
   render() {
@@ -22,12 +31,11 @@ export default class Index extends Component {
         <h1>本検索</h1>
         <div className="wrapper">
           { books.map(book => {
-            const data = book.volumeInfo
             return (
               <div key={book.id} className="book">
-                <h3>{data.title}</h3>
-                <p>{data.description}</p>
-                <img src={data.imageLinks.thumbnail} />
+                <h3>{book.title}</h3>
+                <p>{book.description}</p>
+                <img src={book.image} />
               </div>
             )
           })}
