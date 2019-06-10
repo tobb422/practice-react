@@ -24,21 +24,26 @@ export default class Index extends Component {
     })
   }
 
-  render() {
+  // render 系
+  renderBookList() {
     const books = this.state.books
+    return books.map(book => {
+      return (
+        <div key={book.id} className="book">
+          <h3>{book.title}</h3>
+          <p>{book.description}</p>
+          <img src={book.image} />
+        </div>
+      )
+    })
+  }
+
+  render() {
     return (
       <main>
         <h1>本検索</h1>
         <div className="wrapper">
-          { books.map(book => {
-            return (
-              <div key={book.id} className="book">
-                <h3>{book.title}</h3>
-                <p>{book.description}</p>
-                <img src={book.image} />
-              </div>
-            )
-          })}
+          {this.renderBookList()}
         </div>
       </main>
     )
