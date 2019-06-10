@@ -6,7 +6,7 @@ export default class Index extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      query: '',
+      query: 'React',
       books: [],
     }
     this.inputText = this.inputText.bind(this)
@@ -15,9 +15,14 @@ export default class Index extends Component {
 
   // lifecycle 系
   async componentDidMount() {
-    const result = await axios.get('https://www.googleapis.com/books/v1/volumes?q=React')
+    const result = await this.searchBooks()
+    this.setBooks(result.data.items)
+  }
+
+  // setState
+  setBooks(values) {
     this.setState({
-      books: result.data.items.map(item => {
+      books: values.map(item => {
         const data = item.volumeInfo
         return {
           id:          item.id,
@@ -28,25 +33,20 @@ export default class Index extends Component {
       }),
     })
   }
+
+  setQuery(value) { this.setState({ query: value }) }
 
   // event 系
-  inputText(e) {
-    this.setState({ query: e.target.value })
-  }
+  inputText(e) { this.setQuery(e.target.value) }
 
   async onSubmit() {
-    const result = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${this.state.query}`)
-    this.setState({
-      books: result.data.items.map(item => {
-        const data = item.volumeInfo
-        return {
-          id:          item.id,
-          title:       data.title,
-          description: data.description,
-          image:       data.imageLinks.thumbnail,
-        }
-      }),
-    })
+    const result = await this.searchBooks()
+    this.setBooks(result.data.items)
+  }
+
+  // method 系
+  async searchBooks() {
+    return await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${this.state.query}`)
   }
 
   // render 系
