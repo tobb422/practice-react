@@ -6,19 +6,44 @@ export default class Index extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      query: '',
       books: [],
     }
+    this.inputText = this.inputText.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
+  // lifecycle 系
   async componentDidMount() {
-    const tmp = await axios.get('https://www.googleapis.com/books/v1/volumes?q=React')
+    const result = await axios.get('https://www.googleapis.com/books/v1/volumes?q=React')
     this.setState({
-      books: tmp.data.items.map(item => {
+      books: result.data.items.map(item => {
+        const data = item.volumeInfo
         return {
           id:          item.id,
-          title:       item.volumeInfo.title,
-          description: item.volumeInfo.description,
-          image:       item.volumeInfo.imageLinks.thumbnail,
+          title:       data.title,
+          description: data.description,
+          image:       data.imageLinks.thumbnail,
+        }
+      }),
+    })
+  }
+
+  // event 系
+  inputText(e) {
+    this.setState({ query: e.target.value })
+  }
+
+  async onSubmit() {
+    const result = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${this.state.query}`)
+    this.setState({
+      books: result.data.items.map(item => {
+        const data = item.volumeInfo
+        return {
+          id:          item.id,
+          title:       data.title,
+          description: data.description,
+          image:       data.imageLinks.thumbnail,
         }
       }),
     })
@@ -42,6 +67,10 @@ export default class Index extends Component {
     return (
       <main>
         <h1>本検索</h1>
+        <div className="search">
+          書籍名：<input type="text" value={this.state.query} onChange={this.inputText} />
+          <input type="submit" onClick={this.onSubmit} />
+        </div>
         <div className="wrapper">
           {this.renderBookList()}
         </div>
