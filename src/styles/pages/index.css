@@ -1,4 +1,31 @@
+main {
+  width: 960px;
+  margin: 80px auto;
+}
+
 h1 {
-  font-size: 20px;
-  color: red;
+  font-size: 40px;
+  text-align: center;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
+}
+
+.book {
+  width: 300px;
+  margin-bottom: 100px;
+}
+
+h3 {
+  height: 80px;
+}
+
+p {
+  height: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
