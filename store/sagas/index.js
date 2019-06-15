@@ -1,4 +1,4 @@
-import axios from 'axios';
+import fetch from 'isomorphic-unfetch';
 import { put, call, takeLatest, select } from 'redux-saga/effects';
 import * as Types from '../types'
 import * as actions from '../actions'
@@ -6,8 +6,9 @@ import * as actions from '../actions'
 function* searchBooks() {
   const result = yield call(
     async params => {
-      const result = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${params.query}`)
-      return result.data.items.map(item => {
+      const result = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${params.query}`)
+      const data = await result.json()
+      return data.items.map(item => {
         const data = item.volumeInfo
         return {
           id:          item.id,

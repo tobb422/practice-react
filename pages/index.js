@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../store/actions';
 
 import Layout from '../components/layouts/main'
-// import '../styles/pages/index.css';
+import '../styles/pages/index.scss';
 
 import Book from '../components/book';
 
