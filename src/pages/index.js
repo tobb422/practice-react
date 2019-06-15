@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../styles/pages/index.css';
 import axios from 'axios';
 
+import Book from '../components/book';
+
 export default class Index extends Component {
   constructor(props) {
     super(props)
@@ -54,11 +56,7 @@ export default class Index extends Component {
     const books = this.state.books
     return books.map(book => {
       return (
-        <div key={book.id} className="book">
-          <h3>{book.title}</h3>
-          <p>{book.description}</p>
-          <img src={book.image} alt="本の画像" />
-        </div>
+        <Book key={book.id} book={book} />
       )
     })
   }
