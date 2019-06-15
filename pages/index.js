@@ -16,63 +16,25 @@ class Index extends Component {
     this.onSubmit = this.onSubmit.bind(this)
   }
 
-  static async getInitialProps(ctx) {
-    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=React`)
-    const data = await res.json()
-    return {
-      books: data.items.map(item => {
-      const data = item.volumeInfo
-      return {
-        id: item.id,
-        title: data.title,
-        description: data.description,
-        image: data.imageLinks.thumbnail,
-      }
-    })
-    }
-  }
-
-  // setState
-  setBooks(values) {
-    this.props.actions.searchBooks(values.map(item => {
-      const data = item.volumeInfo
-      return {
-        id: item.id,
-        title: data.title,
-        description: data.description,
-        image: data.imageLinks.thumbnail,
-      }
-    }))
-  }
+  static async getInitialProps() {}
 
   // event 系
   inputText(e) {
-    const { actions } = this.props
-    actions.setQuery(e.target.value)
+    this.props.actions.setQuery(e.target.value)
   }
 
   onSubmit() {
-    this.searchBooks()
-  }
-
-  // method 系
-  searchBooks() {
     this.props.actions.asyncSearchBooks()
   }
 
   // render 系
   renderBookList() {
     const { state } = this.props
-    return state.books.map(book => {
-      return (
-        <Book key={book.id} book={book}/>
-      )
-    })
+    return state.books.map(book => <Book key={book.id} book={book}/>)
   }
 
   renderContent() {
     const { state } = this.props
-    console.log(this.props)
     return (
       <main>
         <h1>本検索</h1>
@@ -86,7 +48,6 @@ class Index extends Component {
       </main>
     )
   }
-
 
   render() {
     return <Layout content={this.renderContent()}/>
