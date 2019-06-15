@@ -1,15 +1,21 @@
 import * as Types from '../types';
 
 const initialState = {
+  query: 'React',
   books: [],
 };
 
-export const searchBooksReducer = (state = initialState, action) => {
+const indexReducer = (state = initialState, action) => {
   const { type, payload } = action
+  console.log(action)
   switch (type) {
-    case Types.SEARCH_BOOKS:
+    case Types.SET_BOOKS:
+      return Object.assign({}, state, payload)
+    case Types.SET_QUERY:
       return Object.assign({}, state, payload)
     default:
       return state;
   }
 }
+
+export default indexReducer;

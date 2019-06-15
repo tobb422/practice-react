@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
 import '../styles/pages/index.css';
-import axios from 'axios';
 
 import Book from '../components/book';
 
 export default class Index extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      query: 'React',
-      books: [],
-    }
     this.inputText = this.inputText.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
   }
 
   // lifecycle 系
-  async componentDidMount() {
-    const result = await this.searchBooks()
-    this.setBooks(result)
+  componentDidMount() {
+    this.searchBooks()
   }
 
   // setState
@@ -34,20 +28,19 @@ export default class Index extends Component {
     }))
   }
 
-  setQuery(value) { this.setState({ query: value }) }
-
   // event 系
-  inputText(e) { this.setQuery(e.target.value) }
+  inputText(e) {
+    const { actions } = this.props
+    actions.setQuery(e.target.value)
+  }
 
-  async onSubmit() {
-    const result = await this.searchBooks()
-    this.setBooks(result)
+  onSubmit() {
+    this.searchBooks()
   }
 
   // method 系
-  async searchBooks() {
-    const result = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${this.state.query}`)
-    return result.data.items
+  searchBooks() {
+    this.props.actions.asyncSearchBooks()
   }
 
   // render 系
@@ -61,11 +54,12 @@ export default class Index extends Component {
   }
 
   render() {
+    const { state } = this.props
     return (
       <main>
         <h1>本検索</h1>
         <div className="search">
-          書籍名：<input type="text" value={this.state.query} onChange={this.inputText} />
+          書籍名：<input type="text" value={state.query} onChange={this.inputText} />
           <input type="submit" onClick={this.onSubmit} />
         </div>
         <div className="wrapper">

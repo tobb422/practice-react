@@ -12,7 +12,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      searchBooks: books => dispatch(actions.searchBooks(books))
+      asyncSearchBooks: _ => dispatch(actions.asyncSearchBooks()),
+      setQuery: query => dispatch(actions.setQuery(query))
     }
   }
 }

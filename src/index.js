@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Index from './containers/index';
-import { searchBooksReducer } from "./store/reducers";
+import indexReducer from "./store/reducers";
+import indexSage from './store/sagas';
 
-const store = createStore(combineReducers({ index: searchBooksReducer }));
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(combineReducers({ index: indexReducer }), applyMiddleware(sagaMiddleware));
+sagaMiddleware.run(indexSage)
 
 function App() {
   return (
