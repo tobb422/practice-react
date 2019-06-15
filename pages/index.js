@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
+import { connect } from 'react-redux';
+import * as actions from '../store/actions';
 
 import Layout from '../components/layouts/main'
 // import '../styles/pages/index.css';
@@ -14,7 +16,7 @@ class Index extends Component {
     this.onSubmit = this.onSubmit.bind(this)
   }
 
-  static async getInitialProps() {
+  static async getInitialProps(ctx) {
     const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=React`)
     const data = await res.json()
     return {
@@ -60,8 +62,8 @@ class Index extends Component {
 
   // render 系
   renderBookList() {
-    // const { state } = this.props
-    return this.props.books.map(book => {
+    const { state } = this.props
+    return state.books.map(book => {
       return (
         <Book key={book.id} book={book}/>
       )
@@ -75,8 +77,8 @@ class Index extends Component {
       <main>
         <h1>本検索</h1>
         <div className="search">
-          {/*書籍名：<input type="text" value={state.query} onChange={this.inputText} />*/}
-          {/*<input type="submit" onClick={this.onSubmit} />*/}
+          書籍名：<input type="text" value={state.query} onChange={this.inputText} />
+          <input type="submit" onClick={this.onSubmit} />
         </div>
         <div className="wrapper">
           {this.renderBookList()}
@@ -91,4 +93,20 @@ class Index extends Component {
   }
 }
 
-export default withRouter(Index)
+const mapStateToProps = state => {
+  const { index } = state;
+  return {
+    state: index,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: {
+      asyncSearchBooks: _ => dispatch(actions.asyncSearchBooks()),
+      setQuery: query => dispatch(actions.setQuery(query))
+    }
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Index))
