@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
-import fetch from 'isomorphic-unfetch';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions';
 
@@ -39,8 +38,8 @@ class Index extends Component {
       <main>
         <h1>本検索</h1>
         <div className="search">
-          書籍名：<input type="text" value={state.query} onChange={this.inputText} />
-          <input type="submit" onClick={this.onSubmit} />
+          書籍名：<input type="text" value={state.query} onChange={this.inputText}/>
+          <input type="submit" onClick={this.onSubmit}/>
         </div>
         <div className="wrapper">
           {this.renderBookList()}
