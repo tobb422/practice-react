@@ -18,22 +18,20 @@ export default class Index extends Component {
   // lifecycle 系
   async componentDidMount() {
     const result = await this.searchBooks()
-    this.setBooks(result.data.items)
+    this.setBooks(result)
   }
 
   // setState
   setBooks(values) {
-    this.setState({
-      books: values.map(item => {
-        const data = item.volumeInfo
-        return {
-          id:          item.id,
-          title:       data.title,
-          description: data.description,
-          image:       data.imageLinks.thumbnail,
-        }
-      }),
-    })
+    this.props.actions.searchBooks(values.map(item => {
+      const data = item.volumeInfo
+      return {
+        id:          item.id,
+        title:       data.title,
+        description: data.description,
+        image:       data.imageLinks.thumbnail,
+      }
+    }))
   }
 
   setQuery(value) { this.setState({ query: value }) }
@@ -43,18 +41,19 @@ export default class Index extends Component {
 
   async onSubmit() {
     const result = await this.searchBooks()
-    this.setBooks(result.data.items)
+    this.setBooks(result)
   }
 
   // method 系
   async searchBooks() {
-    return await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${this.state.query}`)
+    const result = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${this.state.query}`)
+    return result.data.items
   }
 
   // render 系
   renderBookList() {
-    const books = this.state.books
-    return books.map(book => {
+    const { state } = this.props
+    return state.books.map(book => {
       return (
         <Book key={book.id} book={book} />
       )
