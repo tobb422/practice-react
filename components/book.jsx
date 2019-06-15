@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/pages/index.css';
+// import '../styles/pages/index.css';
 
 const Book = (props) => {
   const book = props.book

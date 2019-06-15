@@ -3,7 +3,7 @@ import { put, call, takeLatest, select } from 'redux-saga/effects';
 import * as Types from '../types'
 import * as actions from '../actions'
 
-export function* searchBooks() {
+function* searchBooks() {
   const result = yield call(
     async params => {
       const result = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${params.query}`)
