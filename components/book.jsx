@@ -1,14 +1,16 @@
 import React from 'react';
-// import '../styles/pages/index.css';
+import Link from "next/link"
 
 const Book = (props) => {
   const book = props.book
   return (
-    <div className="book">
-      <h3>{book.title}</h3>
-      <p>{book.description}</p>
-      <img src={book.image} alt="本の画像" />
-    </div>
+    <Link href="/books/aiueo">
+      <div className="book">
+        <h3>{book.title}</h3>
+        <p>{book.description}</p>
+        <img src={book.image} alt="本の画像" />
+      </div>
+    </Link>
   )
 }
 

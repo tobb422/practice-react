@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
+
 import * as actions from '../store/actions';
 
 import Layout from '../components/layouts/main'
+import Book from '../components/book';
 import '../styles/pages/index.scss';
 
-import Book from '../components/book';
 
 class Index extends Component {
   constructor(props) {
@@ -29,7 +30,9 @@ class Index extends Component {
   // render 系
   renderBookList() {
     const { state } = this.props
-    return state.books.map(book => <Book key={book.id} book={book}/>)
+    return state.books.map(book => {
+      return <Book key={book.id} book={book} />
+    })
   }
 
   renderContent() {

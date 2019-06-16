@@ -14,7 +14,7 @@ function* searchBooks() {
           id:          item.id,
           title:       data.title,
           description: data.description,
-          image:       data.imageLinks.thumbnail,
+          image:       data.imageLinks.thumbnail
         }
       })
     },

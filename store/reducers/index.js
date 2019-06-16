@@ -7,7 +7,7 @@ const initialState = {
 
 const indexReducer = (state = initialState, action) => {
   const { type, payload } = action
-  console.log(action)
+  console.log(state)
   switch (type) {
     case Types.SET_BOOKS:
       return Object.assign({}, state, payload)
